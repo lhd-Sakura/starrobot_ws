@@ -1,0 +1,8 @@
+cmd_vel_sub_name: "cmd_vel"
+swerve_sub_name: "initial_angle"
+pid_sub_name: "pid"
+servo_sub_name: "servo"
+raw_vel_pub_name: "raw_vel"
+raw_imu_pub_name: "raw_imu"
+battery_pub_name: "battery" 
+sonar_pub_name: "sonar"

@@ -1,0 +1,4 @@
+<launch>
+    <node pkg = "starrobot_calib" type = "calibrate_servo.py" name = "calibrate_servo" output="screen"/>
+    <include file = "$(find starrobot_bringup)/launch/minimal.launch" />
+</launch>

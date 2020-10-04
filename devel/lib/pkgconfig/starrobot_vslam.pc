@@ -1,0 +1,8 @@
+prefix=/home/star/starrobot_ws/devel
+
+Name: starrobot_vslam
+Description: Description of starrobot_vslam
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/star/starrobot_ws/devel/lib 
+Requires: 

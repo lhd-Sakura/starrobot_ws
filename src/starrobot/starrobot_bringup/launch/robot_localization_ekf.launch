@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Odom-IMU Extended Kalman Filter-->
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization"> 
+        <remap from="odometry/filtered" to="odom" />
+        <rosparam command="load" file="$(find starrobot_bringup)/param/ekf/robot_localization.yaml" />
+    </node>
+</launch>
+
+

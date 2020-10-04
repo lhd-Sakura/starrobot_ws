@@ -1,0 +1,15 @@
+\subsubsection usage Usage
+\verbatim
+<node name="calibrate_linear" pkg="starrobot_calib" type="calibrate_linear">
+  <param name="distance_x" type="double" value="1.0" />
+  <param name="distance_y" type="double" value="0.0" />
+  <param name="initial_angle" type="int" value="0" />
+  <param name="speed" type="double" value="0.1" />
+  <param name="tolerance" type="double" value="0.01" />
+  <param name="odom_linear_scale_correction" type="double" value="1.0" />
+  <param name="current_pose_x" type="double" value="0.0" />
+  <param name="current_pose_y" type="double" value="0.0" />
+  <param name="start_test" type="bool" value="False" />
+</node>
+\endverbatim
+

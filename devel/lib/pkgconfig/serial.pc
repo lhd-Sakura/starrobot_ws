@@ -1,0 +1,8 @@
+prefix=/home/star/starrobot_ws/devel
+
+Name: serial
+Description: Description of serial
+Version: 1.2.1
+Cflags: -I/home/star/starrobot_ws/src/serial_p/serial/include
+Libs: -L/home/star/starrobot_ws/devel/lib -lserial
+Requires: 

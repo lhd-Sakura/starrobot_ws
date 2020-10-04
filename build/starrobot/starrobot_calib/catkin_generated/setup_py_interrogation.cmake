@@ -1,0 +1,6 @@
+set(starrobot_calib_SETUP_PY_VERSION "0.0.0")
+set(starrobot_calib_SETUP_PY_SCRIPTS "")
+set(starrobot_calib_SETUP_PY_PACKAGES "starrobot_calib")
+set(starrobot_calib_SETUP_PY_PACKAGE_DIRS "src/starrobot_calib")
+set(starrobot_calib_SETUP_PY_MODULES "")
+set(starrobot_calib_SETUP_PY_MODULE_DIRS "")

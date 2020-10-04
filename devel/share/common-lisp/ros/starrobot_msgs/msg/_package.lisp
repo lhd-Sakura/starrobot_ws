@@ -1,0 +1,31 @@
+(cl:defpackage starrobot_msgs-msg
+  (:use )
+  (:export
+   "<BATTERY>"
+   "BATTERY"
+   "<CRASH>"
+   "CRASH"
+   "<ENCODER>"
+   "ENCODER"
+   "<FALL>"
+   "FALL"
+   "<IMU>"
+   "IMU"
+   "<INFRARED>"
+   "INFRARED"
+   "<KEY>"
+   "KEY"
+   "<PID>"
+   "PID"
+   "<POWERKEY>"
+   "POWERKEY"
+   "<SERVO>"
+   "SERVO"
+   "<SONAR>"
+   "SONAR"
+   "<VELOCITIES>"
+   "VELOCITIES"
+   "<RPM>"
+   "RPM"
+  ))
+

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="map_file" default="~/map/map"/>
+  <node pkg="map_server" name="map_server"  type="map_saver" args="-f $(arg map_file)" output="screen" />
+
+</launch>

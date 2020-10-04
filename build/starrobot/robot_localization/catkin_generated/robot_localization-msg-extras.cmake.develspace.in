@@ -1,0 +1,2 @@
+set(robot_localization_MESSAGE_FILES "")
+set(robot_localization_SERVICE_FILES "/home/star/starrobot_ws/src/starrobot/robot_localization/srv/GetState.srv;/home/star/starrobot_ws/src/starrobot/robot_localization/srv/SetDatum.srv;/home/star/starrobot_ws/src/starrobot/robot_localization/srv/SetPose.srv;/home/star/starrobot_ws/src/starrobot/robot_localization/srv/ToggleFilterProcessing.srv;/home/star/starrobot_ws/src/starrobot/robot_localization/srv/FromLL.srv;/home/star/starrobot_ws/src/starrobot/robot_localization/srv/ToLL.srv")

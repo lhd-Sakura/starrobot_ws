@@ -1,0 +1,8 @@
+prefix=/home/star/starrobot_ws/devel
+
+Name: starrobot_pid
+Description: Description of starrobot_pid
+Version: 0.0.1
+Cflags: -I/home/star/starrobot_ws/devel/include -I/home/star/starrobot_ws/src/starrobot/starrobot_pid/include
+Libs: -L/home/star/starrobot_ws/devel/lib 
+Requires: dynamic_reconfigure message_runtime roscpp std_msgs starrobot_msgs

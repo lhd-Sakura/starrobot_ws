@@ -1,0 +1,2 @@
+set(hector_nav_msgs_MESSAGE_FILES "")
+set(hector_nav_msgs_SERVICE_FILES "/home/star/starrobot_ws/src/slam_p/hector_slam/hector_nav_msgs/srv/GetDistanceToObstacle.srv;/home/star/starrobot_ws/src/slam_p/hector_slam/hector_nav_msgs/srv/GetRecoveryInfo.srv;/home/star/starrobot_ws/src/slam_p/hector_slam/hector_nav_msgs/srv/GetRobotTrajectory.srv;/home/star/starrobot_ws/src/slam_p/hector_slam/hector_nav_msgs/srv/GetSearchPosition.srv;/home/star/starrobot_ws/src/slam_p/hector_slam/hector_nav_msgs/srv/GetNormal.srv")

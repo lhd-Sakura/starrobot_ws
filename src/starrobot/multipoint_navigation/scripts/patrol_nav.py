@@ -1,0 +1,274 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+ 
+################################################
+# Copyright(c): 2016-2018 www.corvin.cn
+################################################
+# Author: corvin
+################################################
+# Description:
+# 在地图上指定xx个坐标点作为巡逻点,可以在这些点
+# 之间进行不断的巡逻,也可以指定巡逻的圈数,当到
+# 达指定的圈数后就会停止运行.该patrol_nav_node,
+# 是通过向MoveBaseGoal的target_pose中发布目标
+# 位姿来达到巡航的目的,根据move_base的action状态
+# 来判断机器人是否到达了目标位置.当到达了目标位置
+# 后取出下一个目标位姿进行导航.直到字典存储的所有
+# 目标位姿都到达后,就认为巡航一圈结束了.
+################################################
+# History:
+#   20180806: initial this file.
+################################################
+import rospy
+import random
+import actionlib
+from actionlib_msgs.msg import *
+from geometry_msgs.msg import Pose, Point, Quaternion,PoseWithCovarianceStamped
+from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
+from visualization_msgs.msg import Marker
+from visualization_msgs.msg import MarkerArray
+from geometry_msgs.msg import PointStamped
+from geometry_msgs.msg import PoseStamped
+import json 
+class PatrolNav():
+ 
+    def __init__(self):
+        rospy.init_node('patrol_nav_node', anonymous=False)
+        rospy.on_shutdown(self.shutdown)
+ 
+        # From launch file get parameters
+        self.rest_time         = rospy.get_param("~rest_time", 5)
+        self.keep_patrol       = rospy.get_param("~keep_patrol",   False)
+        self.random_patrol     = rospy.get_param("~random_patrol", False)
+        self.patrol_type       = rospy.get_param("~patrol_type", 0)
+        self.patrol_loop       = rospy.get_param("~patrol_loop", 2)
+        self.patrol_time       = rospy.get_param("~patrol_time", 5)
+        self.point_read        = rospy.get_param("~point_read", False)
+        self.addr_point_file   = rospy.get_param("~addr_point_file",'point')
+        self.potrol_points_num = rospy.get_param("~potrol_points_num",4)
+        rospy.Subscriber("/clicked_point", PointStamped, self.get_pointCallback)
+        #set all navigation target pose
+        self.locations = dict()
+        self.pointnum=0
+        self.count = 0
+        self.clear_file_data = True
+        self.point_yaml = ''
+	self.x_point = []
+        self.y_point = []
+        self.z_point = []
+        self.a_point = []
+        self.index = 0
+        self.marker_scale_big = 0.4
+        self.marker_scale_text = 0.3
+        self.marker_scale_little = 0.2
+        self.is_set_point = False
+        self.patrol_point_num_record = 0
+        self.markerArray = MarkerArray()
+        self.mark_pub = rospy.Publisher('/path_point', MarkerArray, queue_size=100)
+        # Goal state return values
+        goal_states = ['PENDING', 'ACTIVE', 'PREEMPTED', 'SUCCEEDED', 'ABORTED',
+                       'REJECTED', 'PREEMPTING', 'RECALLING', 'RECALLED', 'LOST']
+ 
+        # Subscribe to the move_base action server
+        self.move_base = actionlib.SimpleActionClient("move_base", MoveBaseAction)
+        self.move_base.wait_for_server(rospy.Duration(30))
+        rospy.loginfo("Connected to move base server")
+
+        # Variables to keep track of success rate, running time etc.
+        loop_cnt = 0
+        n_goals  = 0
+        n_successes  = 0
+        target_num   = 0
+        running_time = 0
+        location   = ""
+        start_time = rospy.Time.now()
+        locations_cnt = self.potrol_points_num
+        sequeue = [1,2,3,4,5,6]
+        rospy.loginfo("file path: " + self.addr_point_file)
+        if self.point_read == False:
+            rospy.loginfo("Manual mode")
+
+
+            rospy.loginfo("Please first give the initial position of the robot")
+            rospy.loginfo("Please select the %d points on rviz that you want to cruise", self.potrol_points_num)
+        else:
+            rospy.loginfo("Automatic mode")
+            rospy.loginfo("Start reading coordinate data from the file")
+        # Begin the main loop and run through a sequence of locations
+        while not rospy.is_shutdown():
+	    if self.point_read == True:
+		self.json_load(self.addr_point_file)
+		for i in range(self.potrol_points_num):
+                    self.show_marker(self.x_point[i],self.y_point[i],self.z_point[i],self.a_point[i])
+		self.is_set_point = True
+		self.point_read = False
+            if self.is_set_point == True:
+                rospy.loginfo("Starting position navigation ")
+                #judge if set keep_patrol is true 
+                if self.keep_patrol == False:  
+                    if self.patrol_type == 0: #use patrol_loop
+                        if target_num == locations_cnt :
+                            if loop_cnt < self.patrol_loop-1:
+                                target_num = 0
+                                loop_cnt  += 1
+                                rospy.logwarn("Left patrol loop cnt: %d", self.patrol_loop-loop_cnt)
+                            else:
+                                rospy.logwarn("Now patrol loop over, exit...")
+                                rospy.signal_shutdown('Quit')
+                                break
+                else:
+                    if self.random_patrol == False:
+                        if target_num == locations_cnt:
+                            target_num = 0
+                    else:
+                        target_num = random.randint(0, locations_cnt-1)
+    
+                # Get the next location in the current sequence
+                location = sequeue[target_num]
+                rospy.loginfo("Going to: " + str(location))
+                self.send_goal(location-1)
+    
+                # Increment the counters
+                target_num += 1
+                n_goals    += 1
+    
+                # Allow 5 minutes to get there
+                finished_within_time = self.move_base.wait_for_result(rospy.Duration(300))
+                # Check for success or failure
+                if not finished_within_time:
+                    self.move_base.cancel_goal()
+                    rospy.logerr("ERROR:Timed out achieving goal")
+                else:
+                    state = self.move_base.get_state()
+                    if state == GoalStatus.SUCCEEDED:
+                        n_successes += 1
+                        rospy.loginfo("Goal succeeded!")
+                    else:
+                        rospy.logerr("Goal failed with error code:"+str(goal_states[state]))
+                # How long have we been running?
+                running_time = rospy.Time.now() - start_time
+                running_time = running_time.secs/60.0
+    
+                # Print a summary success/failure and time elapsed
+                rospy.loginfo("Success so far: " + str(n_successes) + "/" +
+                            str(n_goals) + " = " +
+                            str(100 * n_successes/n_goals) + "%")
+                rospy.loginfo("Running time: " + str(self.trunc(running_time, 1)) + " min")
+                rospy.sleep(self.rest_time)
+    
+                if self.keep_patrol == False and self.patrol_type == 1: #use patrol_time
+                    if running_time >= self.patrol_time:
+                        rospy.logwarn("Now reach patrol_time, back to original position...")
+                        self.send_goal('six')
+                        rospy.signal_shutdown('Quit')
+ 
+    def send_goal(self, locate):
+        # Set up the next goal location
+        self.goal = MoveBaseGoal()
+        self.goal.target_pose.pose = self.locations[locate]
+        self.goal.target_pose.header.frame_id = 'map'
+        self.goal.target_pose.header.stamp = rospy.Time.now()
+        self.move_base.send_goal(self.goal) #send goal to move_base
+        
+    def trunc(self, f, n):
+        # Truncates/pads a float f to n decimal places without rounding
+        slen = len('%.*f' % (n, f))
+        return float(str(f)[:slen])
+        
+        #If "t" is 0, it is not written to the file. If "t" is 1, it is written to the file
+    def get_pointCallback(self,point_data):
+        if self.clear_file_data == True:
+           f = open(self.addr_point_file + ".yaml", 'w') 
+           f.truncate()
+           f.close()
+           self.json_clear(self.addr_point_file)
+	   self.clear_file_data = False
+	x_point_ = point_data.point.x
+        y_point_ = point_data.point.y
+        z_point_ = point_data.point.z
+        a_point_ = 1.0
+        self.show_marker(x_point_,y_point_,z_point_,a_point_)
+        if self.patrol_point_num_record == self.potrol_points_num :
+            self.is_set_point = True
+    def show_marker(self,x_point,y_point,z_point,a_point):
+        rospy.loginfo("Point:%d ( X:%f Y:%f Z:%f A:%f)",self.patrol_point_num_record+1,x_point,y_point,z_point,a_point)
+        self.locations[self.patrol_point_num_record] = Pose(Point(x_point,y_point,z_point), Quaternion(0.000, 0.000, 0.006,a_point))
+        marker = Marker()
+        marker.header.frame_id = '/map'
+        marker.type = marker.TEXT_VIEW_FACING
+        marker.action = marker.ADD
+        marker.scale.x = 1
+        marker.scale.y = 1
+        marker.scale.z = 1
+        marker.color.a = 1.0
+        marker.color.r = 1.0
+        marker.color.g = 0.0
+        marker.color.b = 0.0
+        marker.pose.orientation.w = a_point
+        marker.pose.position.x = x_point
+        marker.pose.position.y = y_point
+        marker.pose.position.z = z_point
+        marker.text = str(self.count+1)
+        marker.id = len(self.markerArray.markers)
+        self.markerArray.markers.append(marker)
+        self.mark_pub.publish(self.markerArray)
+        self.count += 1
+	self.patrol_point_num_record+=1
+	if self.point_read == False:
+	   goal = {'y':y_point,'x':x_point,'z':z_point,'w':a_point}
+	   point_yaml = "point:"+str(self.count)+"  x:"+str(x_point)+"  y:"+str(y_point)+"  a:"+str(a_point)+"\n"
+	   self.json_append(goal, self.addr_point_file)
+	   self.write_text(point_yaml,self.addr_point_file)        
+
+    def write_text(self,data,file_name):  
+        f = open(file_name + ".yaml", 'a') 
+        f.write(data)
+        f.close()
+        return 0
+    def json_write(self,data,file_name):
+        with open(file_name + ".json", 'w') as outfile:
+            json.dump(data, outfile, ensure_ascii=False, encoding='utf-8')
+            outfile.write('\n')
+        print 'write json file successfully...'
+
+    def json_append(self,data, file_name):
+        with open(file_name + ".json", 'a') as outfile:
+            json.dump(data, outfile, ensure_ascii=False, encoding='utf-8')
+            outfile.write('\n')
+        print 'write json file successfully...'
+
+    def json_read(self,data, file_name):
+        with open(file_name + '.json', 'r') as loadfile:
+            data = json.load(loadfile)
+        print json.dumps(data, ensure_ascii=False, encoding='utf-8')
+
+    def json_load(self,file_name):
+        loadfile = open(file_name + '.json', 'r')
+        for line in loadfile:
+            data = json.loads(line)
+	    self.x_point.append(data['x'])
+	    self.y_point.append(data['y'])
+	    self.z_point.append(data['z'])
+	    self.a_point.append(data['w'])
+        loadfile.close()
+
+    def json_read_lines(self,data, file_name):
+        loadfile = open(file_name + ".json", 'r')
+        data = list()
+        for line in loadfile:
+            data.append(json.loads(line))
+        loadfile.close()
+        return data
+
+    def json_clear(self,file_name):
+        loadfile = open(file_name + ".json", 'w+')
+        loadfile.truncate()
+    def shutdown(self):
+        rospy.logwarn("Stopping the patrol...")
+ 
+if __name__ == '__main__':
+    try:
+        PatrolNav()
+        rospy.spin()
+    except rospy.ROSInterruptException:
+        rospy.logwarn("patrol navigation exception finished.")

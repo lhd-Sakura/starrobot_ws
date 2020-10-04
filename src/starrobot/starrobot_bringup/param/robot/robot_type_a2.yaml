@@ -1,0 +1,72 @@
+# choose the base you're building . ROBOT Type : d2 | d4 | t2 | t4 | o3 | o4 | m4 | a1 | a2
+starrobot_base: "a2"   
+
+# Choose the IMU you're using IMU Type : GY85 | MPU6050 | MPU9250_N | MPU9250_W | MPU6500_N | MPU6500_W
+imu_type: "MPU6050" 
+
+# This parameter is not valid for this model
+# Choose the Motor Drive you're using Motor Drive Type : A4950 | BTN79xx | ESC | ESC_ENCODER
+starrobot_motor_drive: "ESC"
+# if Display robot configuration parameters debug_message ? 1 for true , 0 for false
+debug_message: 1  
+# If you're building a robot for the first time it should be equal to 1, and when you're done building it should be 0 
+debug_base: 1
+# PWM output maximum minimum value                  
+motor_in:
+  pwm_max: 80
+  pwm_min: -80
+# PID parameter of robot  
+pid:
+  k_p: 0.3  #P constant
+  k_i: 0.1  #i constant
+  k_d: 0.1  #d constant
+a1_cmd_proportion: 1.0
+#Initial steering gear Angle
+initial_turning_angle: 0 
+#Whether the emergency stop button is enabled
+emergency_stop: 0
+#Esc median
+esc_median_value: 0
+#Maximum turning Angle (plus or minus)
+max_steering_angle: 60
+#Whether a1 model USES encoder or not, the default is "0" and it is not used. If it is used, it should be "1".
+a2_encoder: 0
+# define your robot' specs here
+max_rpm: 366                   #  Maximum motor speed           
+counts_per_rev: 19920          #  The value of the encoder for one turn of the wheel
+#if counts_per_rev does not equal 0 so the motor_reduction_ratio parameter is valid
+motor_reduction_ratio: 30      #  Motor reduction ratio
+encoder_line_number: 13        #  Encoder line number
+wheel_diameter: 0.065          #  wheel_diameter
+pwm_bits: 8                    #  PWM precision number pwm_max = 2^8=256
+lr_wheels_distance: 0.37       #  Between the left and right wheels
+fr_wheels_distance: 0.32       #  The spacing between the front and rear wheels
+#The rotation direction of the left wheel motor is "1" by default and "-1" if the rotation direction is wrong.
+Direction_motor1_rotation: 1   #  
+#The rotation direction of the right wheel motor is "1" by default and "-1" if the rotation direction is wrong.
+Direction_motor2_rotation: 1   # 
+#The direction of the value of the left-wheel encoder, by default "1" encoder is positive, if not, it should be "-1"
+Direction_encoder1_value: 1  
+#Whether to use ultrasonic sensor flag bit, the default is "0". If so, what should enable the sensor flag bit to be enabled to be "1"
+ultrasonic:
+  ultrasonic_1: 0
+  ultrasonic_2: 0
+  ultrasonic_3: 0
+#Steering gear enable flag bit, default is "0" is not enabled, if need to be enabled, should be assigned to the corresponding flag bit is "1"
+servo:  
+  servo_3: 0
+  servo_4: 0
+
+#Frequency tuning of underlying release topics
+raw_vel_frequency: 100
+raw_imu_frequency: 100
+raw_bat_frequency: 5
+raw_sonar_frequency: 50
+
+
+
+
+
+
+
+

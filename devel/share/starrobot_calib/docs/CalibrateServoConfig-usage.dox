@@ -1,0 +1,11 @@
+\subsubsection usage Usage
+\verbatim
+<node name="calibrate_servo" pkg="starrobot_calib" type="calibrate_servo">
+  <param name="servo1" type="bool" value="False" />
+  <param name="servo2" type="bool" value="False" />
+  <param name="servo3" type="bool" value="False" />
+  <param name="servo4" type="bool" value="False" />
+  <param name="angle" type="int" value="0" />
+</node>
+\endverbatim
+

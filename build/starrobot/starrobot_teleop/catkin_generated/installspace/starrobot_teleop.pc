@@ -1,0 +1,8 @@
+prefix=/home/star/starrobot_ws/install
+
+Name: starrobot_teleop
+Description: Description of starrobot_teleop
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/star/starrobot_ws/install/lib 
+Requires: 

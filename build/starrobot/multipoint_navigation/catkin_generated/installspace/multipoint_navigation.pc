@@ -1,0 +1,8 @@
+prefix=/home/star/starrobot_ws/install
+
+Name: multipoint_navigation
+Description: Description of multipoint_navigation
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/star/starrobot_ws/install/lib 
+Requires: 

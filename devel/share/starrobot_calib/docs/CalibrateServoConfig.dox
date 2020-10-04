@@ -1,0 +1,10 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~servo1" : \b [bool] Enable servo1 test min: False, default: False, max: True
+- \b "~servo2" : \b [bool] Enable servo2 test min: False, default: False, max: True
+- \b "~servo3" : \b [bool] Enable servo3 test min: False, default: False, max: True
+- \b "~servo4" : \b [bool] Enable servo4 test min: False, default: False, max: True
+- \b "~angle" : \b [int] Servo rotation angle value min: -180, default: 0, max: 180
+

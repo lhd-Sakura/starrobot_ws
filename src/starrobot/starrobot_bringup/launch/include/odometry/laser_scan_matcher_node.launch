@@ -1,0 +1,10 @@
+<!--
+Example launch file: launches the scan matcher with pre-recorded data
+-->
+
+<launch>
+	<rosparam command="load" file="$(find laser_scan_matcher)/param/laser_scan_matcher_node.yaml"/>
+  <node pkg="laser_scan_matcher" type="laser_scan_matcher_node" name="laser_scan_matcher_node" output="screen">
+  </node>
+
+</launch>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Publish starrobot odometry -->
+    <node pkg="starrobot_bringup" name="starrobot_base_node" type="starrobot_base_node" output="screen">
+      <param name="linear_scale_correction" type="double" value="0.61" />
+      <param name="angular_scale_wheel" type="double" value="0.72" />
+    </node>
+</launch>
+
+

@@ -1,0 +1,8 @@
+prefix=/home/star/starrobot_ws/install
+
+Name: starrobot_calib
+Description: Description of starrobot_calib
+Version: 0.0.0
+Cflags: -I/home/star/starrobot_ws/install/include
+Libs: -L/home/star/starrobot_ws/install/lib -lstarrobot_calib
+Requires: roscpp rospy std_msgs dynamic_reconfigure

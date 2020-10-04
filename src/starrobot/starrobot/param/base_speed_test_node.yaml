@@ -1,0 +1,3 @@
+base_speed_test_pub_name: "cmd_vel"
+base_speed_test_speed: 0.5 #(m/s)
+base_speed_test_times: 5  #（s）

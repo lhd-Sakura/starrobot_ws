@@ -1,0 +1,4 @@
+<launch>
+    <node pkg = "starrobot_calib" type = "calibrate_angular.py" name = "calibrate_angular" output="screen"/>
+    <include file = "$(find starrobot_bringup)/launch/minimal_wheel_odom.launch" />
+</launch>

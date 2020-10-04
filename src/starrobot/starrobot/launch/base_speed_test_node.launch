@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+    <rosparam command="load" file="$(find starrobot)/param/base_speed_test_node.yaml"/>
+    <node pkg="starrobot" type="base_speed_test" name="base_speed_test" output="screen">
+    </node>
+</launch>

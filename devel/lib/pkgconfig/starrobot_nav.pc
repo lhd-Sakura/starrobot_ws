@@ -1,0 +1,8 @@
+prefix=/home/star/starrobot_ws/devel
+
+Name: starrobot_nav
+Description: Description of starrobot_nav
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/star/starrobot_ws/devel/lib 
+Requires: 

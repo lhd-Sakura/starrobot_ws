@@ -1,0 +1,8 @@
+prefix=/home/star/starrobot_ws/install
+
+Name: starrobot_slam
+Description: Description of starrobot_slam
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/star/starrobot_ws/install/lib 
+Requires: 

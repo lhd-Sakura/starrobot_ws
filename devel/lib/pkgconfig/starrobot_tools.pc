@@ -1,0 +1,8 @@
+prefix=/home/star/starrobot_ws/devel
+
+Name: starrobot_tools
+Description: Description of starrobot_tools
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/star/starrobot_ws/devel/lib 
+Requires: 

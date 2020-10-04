@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Run STARROBOTLIDAR compatible laser drivers. Takes reference from env var STARROBOTLIDAR. ie. export STARROBOTLIDAR=xv11 -->
+    <include file="$(find starrobot_bringup)/launch/include/lidar/$(env STARROBOTLIDAR).launch" />
+
+    <!-- Publish static transform of the laser. Define your sensor offset here -->
+
+    <node pkg="tf2_ros" type="static_transform_publisher" name="laser_launch" args="0 0 0.13 0 0 0  /base_link /laser"/>
+
+</launch>
+
+

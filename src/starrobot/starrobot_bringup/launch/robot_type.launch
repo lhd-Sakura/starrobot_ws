@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch> 
+  <rosparam command="load" file="$(find starrobot_bringup)/param/robot/robot_type_$(env STARROBOTBASE).yaml" />
+</launch>

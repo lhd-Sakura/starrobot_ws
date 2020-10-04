@@ -1,0 +1,8 @@
+prefix=/home/star/starrobot_ws/devel
+
+Name: rplidar_ros
+Description: Description of rplidar_ros
+Version: 1.5.7
+Cflags: 
+Libs: -L/home/star/starrobot_ws/devel/lib 
+Requires: 

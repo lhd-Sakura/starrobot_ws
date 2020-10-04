@@ -1,0 +1,4 @@
+int64 MotorEncoder1
+int64 MotorEncoder2
+int64 MotorEncoder3
+int64 MotorEncoder4

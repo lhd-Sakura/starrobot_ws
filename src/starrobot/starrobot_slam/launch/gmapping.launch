@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+ 
+  <!-- Gmapping -->
+  <include file="$(find starrobot_slam)/launch/include/gmapping/gmapping_$(env STARROBOTBASE).launch.xml" />
+</launch>
+

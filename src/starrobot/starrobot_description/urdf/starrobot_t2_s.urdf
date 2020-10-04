@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<robot name="starrobot_t2">
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.26 .26 .10"/>
+    </geometry>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <material name="blue">
+        <color rgba="0 0 .8 1"/>
+    </material>
+    </visual>
+ </link>
+
+<link name="direction_sign">
+    <visual>
+      <geometry>
+        <box size=".06 .01 .005" />
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="direction_sign_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="direction_sign"/>
+    <origin xyz="0.08 0 0.05"/>
+  </joint>
+
+ <link name="right_wheel">
+    <visual>
+      <geometry>
+        <cylinder length=".04" radius="0.0475"/>
+      </geometry>
+      <material name="black">
+        <color rgba="0 0 0 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="right_wheel_joint" type="continuous">
+    <axis xyz="0 0 1"/>
+    <parent link="base_link"/>
+    <child link="right_wheel"/>
+    <origin rpy="0 1.57075 1.57075" xyz="0.1 0.145 -0.06"/>
+    <limit effort="100" velocity="100"/>
+    <joint_properties damping="0.0" friction="0.0"/>
+  </joint>
+
+ <link name="left_wheel">
+    <visual>
+      <geometry>
+        <cylinder length=".04" radius="0.0475"/>
+      </geometry>
+      <material name="black">
+        <color rgba="0 0 0 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="left_wheel_joint" type="continuous">
+    <axis xyz="0 0 1"/>
+    <parent link="base_link"/>
+    <child link="left_wheel"/>
+    <origin rpy="0 1.57075 1.57075" xyz="0.1 -0.145 -0.06"/>
+    <limit effort="100" velocity="100"/>
+    <joint_properties damping="0.0" friction="0.0"/>
+  </joint>
+	
+	  <link name="sonar_front_center">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <box size="0.01 0.03 0.01" />
+        </geometry>
+      </visual>
+      
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <box size="0.01 0.03 0.01" />
+        </geometry>
+      </collision>
+   </link>
+   
+   <joint name="sonar_front_center" type="fixed">
+      <origin xyz="0.25 0 0.06" rpy="0 0 0" />
+      <parent link="base_link"/>
+      <child link="sonar_front_center"/>
+    </joint>
+    
+   <link name="sonar_front_left">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <box size="0.01 0.03 0.01" />
+        </geometry>
+      </visual>
+      
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <box size="0.01 0.03 0.01" />
+        </geometry>
+      </collision>
+   </link>
+      
+   <joint name="sonar_front_left" type="fixed">
+      <origin xyz="0.15 0.2 0.06" rpy="0 0 0.7854" />
+      <parent link="base_link"/>
+      <child link="sonar_front_left"/>
+    </joint>
+    
+   <link name="sonar_front_right">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <box size="0.01 0.03 0.01" />
+        </geometry>
+      </visual>
+      
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <box size="0.01 0.03 0.01" />
+        </geometry>
+      </collision>
+   </link>
+
+	<joint name="sonar_front_right" type="fixed">
+		  <origin xyz="0.15 -0.2 0.06" rpy="0 0 -0.7854" />
+		  <parent link="base_link"/>
+		  <child link="sonar_front_right"/>
+	</joint>
+
+</robot>

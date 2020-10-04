@@ -1,0 +1,12 @@
+\subsubsection usage Usage
+\verbatim
+<node name="calibrate_angular" pkg="starrobot_calib" type="calibrate_angular">
+  <param name="test_angle" type="double" value="360.0" />
+  <param name="speed" type="double" value="0.5" />
+  <param name="tolerance" type="double" value="1.0" />
+  <param name="angular_scale" type="double" value="1.0" />
+  <param name="current_robot_angle" type="double" value="0.0" />
+  <param name="start_test" type="bool" value="False" />
+</node>
+\endverbatim
+

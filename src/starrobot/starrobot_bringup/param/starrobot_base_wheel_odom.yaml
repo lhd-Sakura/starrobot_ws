@@ -1,0 +1,8 @@
+starrobot_base_sub_mane: "raw_vel"
+starrobot_base_pub_mane: "odom"
+
+starrobot_base_tf_frame_id_name: "odom"
+starrobot_base_tf_child_frame_id_name: "base_footprint"
+starrobot_base_odom_frame_id_name: "odom"
+starrobot_base_odom_child_frame_id_name: "base_footprint"
+pub_encoder_odom_tf: true #pub encoder odom tf is pub "true" is not pub "false"

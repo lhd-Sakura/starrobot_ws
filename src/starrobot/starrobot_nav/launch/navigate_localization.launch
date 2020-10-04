@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<launch>
+
+<!-- 
+    
+1. Build Map first 
+# Finish the first trajectory. No further data will be accepted on it.
+rosservice call /finish_trajectory 0
+
+# Ask Cartographer to serialize its current state.
+# (press tab to quickly expand the parameter syntax)
+rosservice call /write_state "{filename: '${HOME}/map/cartographer-localization.pbstream', include_unfinished_submaps: 'true'}"
+
+2. To run
+
+roslaunch navigate_localization.launch load_state_filename:=${HOME}/map/cartographer-localization.pbstream
+
+-->
+
+  <node name="cartographer_node" pkg="cartographer_ros"
+      type="cartographer_node" args="
+          -configuration_directory $(find starrobot_slam)/config 
+          -configuration_basename starrobot_lidar_2d_localization.lua
+          -load_state_filename $(arg load_state_filename)"
+      output="screen">
+    <remap from="scan" to="/scan" />
+  </node>
+
+  <node name="flat_world_imu_node" pkg="cartographer_turtlebot"
+      type="cartographer_flat_world_imu_node" output="screen">
+    <remap from="imu_in" to="/imu/data" />
+    <remap from="imu_out" to="/imu" />
+  </node>
+
+  <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
+      type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
+
+ <!-- AMCL -->
+  <!-- Use 17.0 for willow's map in simulation -->
+  
+  <arg name="initial_pose_x" default="0.0"/>
+  <arg name="initial_pose_y" default="0.0"/>
+  <arg name="initial_pose_a" default="0.0"/>
+
+  <include file="$(find starrobot_nav)/launch/include/amcl/amcl.launch.xml">
+    <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+    <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+    <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+  </include>
+
+
+  <!-- Move base -->
+  <include file="$(find starrobot_nav)/launch/include/move_base/move_base_$(env STARROBOTBASE).launch" />
+
+</launch>

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+ <launch>
+    <node pkg="imu_calib" name="imu_display_node" type="display_3D_visualization.py" output="screen">
+    </node>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find starrobot_rviz)/rviz/imu.rviz"/>
+</launch>

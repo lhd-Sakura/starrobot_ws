@@ -1,0 +1,24 @@
+<!--
+  Copyright: 2016-2018: www.corvin.cn
+  Author: corvin
+  Description:
+        启动move_base和amcl来进行自动导航,然后启动patrol_nav.
+-->
+<launch>
+  <!-- startup patrol navigation node -->
+  <node pkg="multipoint_navigation" type="patrol_nav.py" name="patrol_nav_node" output="screen" >
+    <param name="rest_time"     value="5" />        <!---Arrival stop time-->
+    <param name="keep_patrol"   value="true" />     <!--"True" keeps patrol mode, "false" only patrols once-->     
+    <param name="random_patrol" value="false" />    <!--"True" in random patrol mode, "false" in sequential patrol mode-->
+    <param name="patrol_type"   value="0" />
+    <param name="patrol_loop"   value="1" />
+    <param name="patrol_time"   value="3" />
+    <!--"True" reads the patrol coordinate point from the file, "false" selects the patrol coordinate point from rviz -->
+    <param name="point_read"   value="true" />     
+    <!-- Load or write to the patrol point file path -->
+    <param name="addr_point_file"   value="$(find multipoint_navigation)/param/point" />
+    <param name="potrol_points_num"   value="4" />  <!-- Number of patrol points-->
+  </node>
+ 
+</launch>
+

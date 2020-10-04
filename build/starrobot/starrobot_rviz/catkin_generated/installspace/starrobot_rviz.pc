@@ -1,0 +1,8 @@
+prefix=/home/star/starrobot_ws/install
+
+Name: starrobot_rviz
+Description: Description of starrobot_rviz
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/star/starrobot_ws/install/lib 
+Requires: 

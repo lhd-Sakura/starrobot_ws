@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Map server -->
+    <arg name="map_file" default="~/map/map.yaml"/>
+    <node pkg="map_server" name="map_server"  type="map_server" args="$(arg map_file)" />
+
+    <!-- AMCL used for localization -->
+    <include file="$(find starrobot_nav)/launch/include/amcl/amcl.launch" />
+    
+    <!-- Calls navigation stack packages for compatible starrobot base -->
+    <!-- Takes reference from env variable STARROBOTBASE. ie. export STARROBOTBASE=2wd -->
+    <include file="$(find starrobot_nav)/launch/include/move_base/move_base_$(env STARROBOTBASE)_s.launch" />
+</launch>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Start ROS communication between the robot's computer and starrobot base -->
+    <rosparam command="load" file="$(find starrobot_bringup)/param/starrobot_usart_topic_name.yaml"/>
+    <node pkg="starrobot_bringup" name="starrobot_robot_node" type="starrobot_robot_node" output="screen">
+        <param name="port" value="/dev/starrobotbase" />
+        <param name="baud" value="115200" />
+    </node>
+    <include file="$(find starrobot_bringup)/launch/robot_type.launch" />
+    <include file="$(find starrobot_description)/launch/include/description.launch.xml" />
+
+    <!-- Publish starrobot wheel odometry -->
+    <rosparam command="load" file="$(find starrobot_bringup)/param/starrobot_base_wheel_odom.yaml" />
+    <include file="$(find starrobot_bringup)/launch/starrobot_base_node.launch" />
+
+    <!-- Publish static transform from base_footprint to base_link -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="bringup_launch" args="0 0 0.05 0 0 0  /base_footprint /base_link"/>
+
+    <!-- Run starrobot compatible laser drivers -->
+    <include file="$(find starrobot_bringup)/launch/include/laser.launch" />
+</launch>
+
+

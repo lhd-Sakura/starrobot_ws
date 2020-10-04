@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+    <rosparam command="load" file="$(find starrobot)/param/base_turnaround_test_node.yaml"/>
+    <node pkg="starrobot" type="base_turnaround_test" name="base_turnaround_test" output="screen">
+    </node>
+</launch>

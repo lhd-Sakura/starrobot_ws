@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Start ROS communication between the robot's computer and starrobot base -->
+
+    <node pkg="rosserial_python" name="rosserial_starrobot" type="serial_node.py" output="screen">
+        <param name="port" value="/dev/starrobotbase" />
+        <param name="baud" value="115200" />
+    </node>
+
+    <include file="$(find starrobot_bringup)/launch/robot_type.launch" />
+    <include file="$(find starrobot_description)/launch/include/description_s.launch.xml" />
+
+    <!-- Publish starrobot wheel odometry -->
+    <rosparam command="load" file="$(find starrobot_bringup)/param/starrobot_base_odom.yaml" />
+    <include file="$(find starrobot_bringup)/launch/starrobot_base_node.launch" />
+
+    <!-- IMU Relay and Filter -->
+    <include file="$(find starrobot_bringup)/launch/include/imu/imu.launch" />
+
+    <!-- Publish static transform from base_footprint to base_link -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="bringup_launch" args="0 0 0.05 0 0 0  /base_footprint /base_link"/>
+
+    <!-- Odom-IMU Extended Kalman Filter-->
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization"> 
+        <remap from="odometry/filtered" to="odom" />
+        <rosparam command="load" file="$(find starrobot_bringup)/param/ekf/robot_localization.yaml" />
+    </node>
+
+    <!-- Run starrobot compatible laser drivers -->
+    <include file="$(find starrobot_bringup)/launch/include/laser.launch" />
+</launch>
+
+
